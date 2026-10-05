@@ -1,0 +1,91 @@
+<style>
+.faq_row {
+   border-bottom: 1px solid #ddd
+}
+.faq_question {
+    cursor: pointer;
+    list-style: none;
+    padding: 15px 0;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center
+}
+.faq::-webkit-details-marker{display:none}
+
+.faq_question::after {
+    content: "+";
+    font-size: 22px;
+    transition: 0.2s
+}
+.faq_row[open] .faq_question::after {
+    content: "-";
+    transition: rotate(180deg)
+}
+.faq_answer {
+    padding: 0 0 15px 0
+}
+</style>
+
+
+<div class="page-width" style="background:white; color:black; padding:30px 0;">
+    <h2 style="color:black; font-size:24px;">{{section.settings.headline}}</h2>
+    {% for block in section.blocks %}
+        <details class="faq_row">
+        <summary class="faq_question">{{ block.settings.question }}</summary>
+        <div class="faq_answer">{{ block.settings.answer }}</div>
+        </details>
+    {%endfor%}
+</div>
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQpage",
+    "mainEntity": [
+        {% for block in section.blocks %}
+        {
+            "@type": "Question",
+            "name": "{{ block.settings.question | json }}",
+            "acceptedAnswer":" {
+                 "@type": "Answer",
+                 "text": "{{ block.settings.answer | strip_html | json }}"
+            }
+        }{% unless forloop.last %},{%endunless%}
+        {%endfor%}
+    ]
+}
+</script>
+
+{%schema%}
+{
+ "name":"FAQ2",
+ "settings":[
+    {"type":"text",
+     "id":"headline",
+     "label":"Heading",
+     "default":"FAQs"
+    }
+ ],
+"blocks":[
+    {
+        "type":"faq",
+        "name":"FAQ",
+        "settings":[
+            {
+                "type":"text",
+                "id":"question",
+                "label":"Question"
+            },
+            {
+                "type":"text",
+                "id":"answer",
+                "label":"Answer"
+            }
+        ]
+    }
+  ],
+  "presets":[{
+    "name":"FAQ2"
+  }]
+}
+{%endschema%}

@@ -1,0 +1,60 @@
+<style>
+.faq_toggle { display: none; }
+.faq_answer { display: none; padding: 10px 0;}
+.faq_toggle:checked + .faq_question + .faq_answer { display: block !important; }
+.faq_question { cursor: pointer; display: block; font-weight: bold; padding: 10px 0; border-bottom: 1px solid #ccc; }
+</style>
+
+
+<div class="page-width Faq" >
+    <h2 class="h2"> {{ section.settings.headline }}</h2>
+
+    {% for block in section.blocks %}
+    <div class="faq_row">
+      <input type="checkbox" id="question-{{ block.id }}" class="faq_toggle">
+      <label for="question-{{ block.id }}" class="faq_question">{{ block.settings.question }}</label>
+      <div class="faq_answer">{{ block.settings.answer}}</div>
+    </div>
+    {% endfor %}
+
+</div>
+
+{% schema %}
+    {
+        "name":"FAQ1",
+        "settings": [
+            {
+                "type":"text",
+                "label":"Headline",
+                "id":"headline"
+            }
+        ],
+        "blocks": [
+            {
+                "name":"question",
+                "type":"question",
+                "settings": [
+                    {
+                        "type":"text",
+                        "label":"question",
+                        "id":"question"
+                    },
+                    {
+                        "type":"text",
+                        "label":"answer",
+                        "id":"answer"
+                    }
+
+                ]
+            }
+        ],
+
+        "presets": [
+            {
+                "name": "FAQ1"
+            }
+        ]
+    }
+{%endschema%}
+
+
